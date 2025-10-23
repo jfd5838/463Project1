@@ -97,9 +97,6 @@ for i, cluster in enumerate(clusters):
     for idx in cluster:
         cluster_labels[idx] = i
 
-np.savez_compressed("VitalDB_Clusters.npz", cluster_labels=cluster_labels, cluster_sizes=cluster_sizes)
-print("Saved cluster assignments to 'VitalDB_Clusters.npz'")
-
 
 # closest pair function
 def closest_pair_in_cluster(X, indices, method="correlation"):
@@ -144,14 +141,6 @@ for cluster_id, cluster_indices in enumerate(clusters):
 mean_cohesion = np.mean(cluster_cohesion) if cluster_cohesion else np.nan
 print(f"\nClosest-pair analysis complete for {len(closest_pairs)} clusters")
 print(f"Average within-cluster distance (lower = tighter): {mean_cohesion:.4f}")
-
-# Save results
-np.savez_compressed(
-    "VitalDB_Cluster_Cohesion.npz",
-    closest_pairs=np.array(closest_pairs, dtype=object),
-    cluster_cohesion=np.array(cluster_cohesion)
-)
-print("Saved cohesion results to 'VitalDB_Cluster_Cohesion.npz'")
 
 
 # Kadane function
@@ -256,16 +245,6 @@ for cid, cluster_indices in enumerate(clusters):
     print(f"Cluster {cid:03d}: size={summary['size']:3d}, mean_sum={mean_sum:.3f}, "
           f"median_len={median_len:.1f}, modal_center={summary['modal_center_bin']}, "
           f"modal_window={summary['modal_window']}, overlap={overlap_frac:.3f}")
-
-# save Kadane results to new npz file
-np.savez_compressed(
-    "VitalDB_Kadane_and_Cluster_Summary.npz",
-    kadane_results=kadane_results,  # (N, 3)
-    centers=centers,
-    lengths=lengths,
-    cluster_kadane_summary=np.array(cluster_kadane_summary, dtype=object)
-)
-print("\nSaved Kadane results and cluster summaries to 'VitalDB_Kadane_and_Cluster_Summary.npz'")
 
 
 # create plot of top K clusters to show reasoning
